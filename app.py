@@ -2,8 +2,32 @@ import streamlit as st
 import joblib
 import pandas as pd
 import plotly.express as px
-import matplotlib.pyplot as plt
-import shap
+import os
+
+# 设置页面配置
+title = "Screening for Geriatric Dysphagia Patients (Multi-class)"
+st.set_page_config(
+    page_title=f"{title}",
+    page_icon="logo.png",
+    layout="wide"
+)
+
+# 获取当前脚本所在目录
+script_dir = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(script_dir, "Multi.pkl")
+
+# 检查模型文件是否存在
+if not os.path.exists(model_path):
+    st.error(f"模型文件不存在: {model_path}")
+
+    # 显示调试信息
+    st.info(f"当前工作目录: {os.getcwd()}")
+    try:
+        st.info(f"目录内容: {os.listdir('.')}")
+    except Exception as e:
+        st.warning(f"无法列出目录内容: {e}")
+
+    st.stop()  # 停止应用执行
 
 # 加载变量配置和模型
 V = pd.read_excel("变量.xlsx")
